@@ -67,6 +67,7 @@ readonly RUN_ARGS="$@"
 	echo "    --static-gcc               - build static GCC"
 	echo "    --dyn-deps                 - build GCC with dynamically dependencies"
 	echo "    --jobs=N                   - specifies number of parallel make threads"
+	echo "    --use-ccache               - use ccache during build"
 	echo "    --rt-version=<v3|v4|v5|trunk|<release>> - specifies mingw-w64 runtime version to build"
 	echo "                                 v3, v4, trunk specify specific branches in the git repo"
 	echo "                                 <release> is a specific release version, uses the tarball"
@@ -250,6 +251,7 @@ while [[ $# > 0 ]]; do
 			}
 			JOBS=${1/--jobs=/}
 		;;
+		--use-ccache) USE_CCACHE=yes ;;
 		--rt-version=*)
 			RUNTIME_VERSION=${1/--rt-version=/}
 			case $RUNTIME_VERSION in
@@ -526,6 +528,11 @@ esac
 
 [[ $LINK_TYPE_SUFFIX == shared ]] && {
 	export PATH=$PREREQ_DIR/$HOST-$LINK_TYPE_SUFFIX/bin:$PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$LINK_TYPE_SUFFIX/bin:$PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$LINK_TYPE_SUFFIX/bin:$PATH
+}
+
+[[ $USE_CCACHE == yes ]] && {
+	export PATH=/usr/lib/ccache/bin/:$PATH
+	echo "-> Ccache enabled."
 }
 
 # **************************************************************************

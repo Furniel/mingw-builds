@@ -133,7 +133,11 @@ function gcc_post_install {
 
 function gcc_switch_compilers {
 	# Change the path to use the new compilers instead of the old ones
-	export PATH=$PREFIX/bin:$LIBS_DIR/bin:$ORIGINAL_PATH
+	[[ $USE_CCACHE == yes ]] && {
+		export PATH=/usr/lib/ccache/bin/:$PREFIX/bin:$LIBS_DIR/bin:$ORIGINAL_PATH
+	} || {
+		export PATH=$PREFIX/bin:$LIBS_DIR/bin:$ORIGINAL_PATH
+	}
 }
 
 # **************************************************************************

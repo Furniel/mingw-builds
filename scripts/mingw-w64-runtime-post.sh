@@ -52,9 +52,9 @@ function runtime_post_install {
 	[[ ! -d $PREFIX/$TARGET ]] && mkdir -p $PREFIX/$TARGET
 
 	[[ $USE_MULTILIB == yes ]] && {
-		RUNTIMEPREFIX=$RUNTIME_DIR/$BUILD_ARCHITECTURE-mingw-w64-$RUNTIME_VERSION-multi
+		RUNTIMEPREFIX=$RUNTIME_DIR/$BUILD_ARCHITECTURE-mingw-w64-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL-multi
 	} || {
-		RUNTIMEPREFIX=$RUNTIME_DIR/$BUILD_ARCHITECTURE-mingw-w64-$RUNTIME_VERSION-nomulti
+		RUNTIMEPREFIX=$RUNTIME_DIR/$BUILD_ARCHITECTURE-mingw-w64-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL-nomulti
 	}
 
 	cp -rfv $RUNTIMEPREFIX/* $PREFIX/$TARGET || { echo "1"; return 1; }
@@ -63,37 +63,37 @@ function runtime_post_install {
 	mkdir -pv $PREFIX/bin $PREFIX/$TARGET/{lib,include}
 
 	# iconv
-	cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$LINK_TYPE_SUFFIX/include/*.h $PREFIX/$TARGET/include/ || { echo "3"; return 1; }
+	cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/include/*.h $PREFIX/$TARGET/include/ || { echo "3"; return 1; }
 	[[ $GCC_DEPS_LINK_TYPE == *--enable-shared* ]] && {
-		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$LINK_TYPE_SUFFIX/lib/*.dll.a $PREFIX/$TARGET/lib/ || { echo "4"; return 1; }
-		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/bin/ || { echo "5"; return 1; }
-		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/$TARGET/lib/ || { echo "6"; return 1; }
+		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/lib/*.dll.a $PREFIX/$TARGET/lib/ || { echo "4"; return 1; }
+		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/bin/ || { echo "5"; return 1; }
+		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/$TARGET/lib/ || { echo "6"; return 1; }
 	}
 	[[ $GCC_DEPS_LINK_TYPE == *--enable-static* ]] && {
-		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$LINK_TYPE_SUFFIX/lib/*.a $PREFIX/$TARGET/lib/ || { echo "7"; return 1; }
+		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/lib/*.a $PREFIX/$TARGET/lib/ || { echo "7"; return 1; }
 	}
 
 	# zlib
-	cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$LINK_TYPE_SUFFIX/include/*.h $PREFIX/$TARGET/include/ || { echo "8"; return 1; }
+	cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/include/*.h $PREFIX/$TARGET/include/ || { echo "8"; return 1; }
 	[[ $GCC_DEPS_LINK_TYPE == *--enable-shared* ]] && {
-		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$LINK_TYPE_SUFFIX/lib/libz.dll.a $PREFIX/$TARGET/lib/ || { echo "9"; return 1; }
-		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/bin/ || { echo "10"; return 1; }
-		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/$TARGET/lib/ || { echo "11"; return 1; }
+		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/lib/libz.dll.a $PREFIX/$TARGET/lib/ || { echo "9"; return 1; }
+		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/bin/ || { echo "10"; return 1; }
+		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/$TARGET/lib/ || { echo "11"; return 1; }
 	}
 	[[ $GCC_DEPS_LINK_TYPE == *--enable-static* ]] && {
-		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$LINK_TYPE_SUFFIX/lib/libz.a $PREFIX/$TARGET/lib/ || { echo "12"; return 1; }
+		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-zlib-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/lib/libz.a $PREFIX/$TARGET/lib/ || { echo "12"; return 1; }
 	}
 
 	# winpthreads
 	[[ $BUILD_SHARED_GCC == yes ]] && {
-		cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION/bin/libwinpthread-1.dll $PREFIX/bin/ || { echo "13"; return 1; }
-		cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION/bin/libwinpthread-1.dll $PREFIX/$TARGET/lib/ || { echo "14"; return 1; }
-		cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION/lib/libwinpthread.dll.a $PREFIX/$TARGET/lib/ || { echo "15"; return 1; }
-		cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION/lib/libpthread.dll.a $PREFIX/$TARGET/lib/ || { echo "16"; return 1; }
+		cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/bin/libwinpthread-1.dll $PREFIX/bin/ || { echo "13"; return 1; }
+		cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/bin/libwinpthread-1.dll $PREFIX/$TARGET/lib/ || { echo "14"; return 1; }
+		cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/lib/libwinpthread.dll.a $PREFIX/$TARGET/lib/ || { echo "15"; return 1; }
+		cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/lib/libpthread.dll.a $PREFIX/$TARGET/lib/ || { echo "16"; return 1; }
 	}
-	cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION/lib/libwinpthread.a $PREFIX/$TARGET/lib/ || { echo "17"; return 1; }
-	cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION/lib/libpthread.a $PREFIX/$TARGET/lib/ || { echo "18"; return 1; }
-	cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION/include/*.h $PREFIX/$TARGET/include/ || { echo "19"; return 1; }
+	cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/lib/libwinpthread.a $PREFIX/$TARGET/lib/ || { echo "17"; return 1; }
+	cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/lib/libpthread.a $PREFIX/$TARGET/lib/ || { echo "18"; return 1; }
+	cp -fv $RUNTIME_DIR/$BUILD_ARCHITECTURE-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/include/*.h $PREFIX/$TARGET/include/ || { echo "19"; return 1; }
 
 	[[ $USE_MULTILIB == yes ]] && {
 		local _reverse_bits=$(func_get_reverse_arch_bit $BUILD_ARCHITECTURE)
@@ -103,30 +103,30 @@ function runtime_post_install {
 
 		# iconv
 		[[ $GCC_DEPS_LINK_TYPE == *--enable-shared* ]] && {
-			cp -fv $PREREQ_DIR/$_reverse_arch-libiconv-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "20"; return 1; }
-			cp -fv $PREREQ_DIR/$_reverse_arch-libiconv-$LINK_TYPE_SUFFIX/lib/*.dll.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "21"; return 1; }
+			cp -fv $PREREQ_DIR/$_reverse_arch-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "20"; return 1; }
+			cp -fv $PREREQ_DIR/$_reverse_arch-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/lib/*.dll.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "21"; return 1; }
 		}
 		[[ $GCC_DEPS_LINK_TYPE == *--enable-static* ]] && {
-			cp -fv $PREREQ_DIR/$_reverse_arch-libiconv-$LINK_TYPE_SUFFIX/lib/*.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "22"; return 1; }
+			cp -fv $PREREQ_DIR/$_reverse_arch-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/lib/*.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "22"; return 1; }
 		}
 
 		# zlib
 		[[ $GCC_DEPS_LINK_TYPE == *--enable-shared* ]] && {
-			cp -fv $PREREQ_DIR/$_reverse_arch-zlib-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "23"; return 1; }
-			cp -fv $PREREQ_DIR/$_reverse_arch-zlib-$LINK_TYPE_SUFFIX/lib/*.dll.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "24"; return 1; }
+			cp -fv $PREREQ_DIR/$_reverse_arch-zlib-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "23"; return 1; }
+			cp -fv $PREREQ_DIR/$_reverse_arch-zlib-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/lib/*.dll.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "24"; return 1; }
 		}
 		[[ $GCC_DEPS_LINK_TYPE == *--enable-static* ]] && {
-			cp -fv $PREREQ_DIR/$_reverse_arch-zlib-$LINK_TYPE_SUFFIX/lib/*.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "25"; return 1; }
+			cp -fv $PREREQ_DIR/$_reverse_arch-zlib-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/lib/*.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "25"; return 1; }
 		}
 
 		# winpthreads
 		[[ $BUILD_SHARED_GCC == yes ]] && {
-			cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION/bin/libwinpthread-1.dll $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "26"; return 1; }
-			cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION/lib/libwinpthread.dll.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "27"; return 1; }
-			cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION/lib/libpthread.dll.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "28"; return 1; }
+			cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/bin/libwinpthread-1.dll $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "26"; return 1; }
+			cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/lib/libwinpthread.dll.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "27"; return 1; }
+			cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/lib/libpthread.dll.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "28"; return 1; }
 		}
-		cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION/lib/libwinpthread.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "29"; return 1; }
-		cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION/lib/libpthread.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "30"; return 1; }
+		cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/lib/libwinpthread.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "29"; return 1; }
+		cp -fv $RUNTIME_DIR/$_reverse_arch-winpthreads-$RUNTIME_VERSION-$THREADS_MODEL-$EXCEPTIONS_MODEL/lib/libpthread.a $PREFIX/$TARGET/lib$_reverse_bits/ || { echo "30"; return 1; }
 
 		mkdir -pv $BUILDS_DIR/$GCC_NAME/$TARGET/$_reverse_bits/{libgcc,libgfortran,libgomp,libitm,libquadmath,libssp,libstdc++-v3}
 		[[ $BUILD_SHARED_GCC == yes ]] && {
@@ -138,8 +138,8 @@ function runtime_post_install {
 	cp -rfv $PREFIX/$TARGET/* $PREFIX/mingw/ || { echo "32"; return 1; }
 
 	[[ $GCC_DEPS_LINK_TYPE == *--enable-shared* ]] && {
-		cp -fv $PREREQ_DIR/$HOST-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/bin/
-		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/bin/
+		cp -fv $PREREQ_DIR/$HOST-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/bin/
+		cp -fv $PREREQ_DIR/$BUILD_ARCHITECTURE-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX/bin/*.dll $PREFIX/bin/
 	}
 
 	return 0

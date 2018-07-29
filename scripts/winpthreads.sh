@@ -35,7 +35,7 @@
 
 # **************************************************************************
 
-PKG_NAME=${PKG_ARCHITECTURE}-winpthreads-${RUNTIME_VERSION}
+PKG_NAME=${PKG_ARCHITECTURE}-winpthreads-${RUNTIME_VERSION}-$THREADS_MODEL-$EXCEPTIONS_MODEL
 
 [[ $RUNTIME_BRANCH == release ]] && {
 	PKG_DIR_NAME=mingw-w64-${RUNTIME_VERSION}/mingw-w64-libraries/winpthreads

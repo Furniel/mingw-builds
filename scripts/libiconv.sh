@@ -36,7 +36,7 @@
 # **************************************************************************
 
 PKG_VERSION=1.15
-PKG_NAME=$PKG_ARCHITECTURE-libiconv-$LINK_TYPE_SUFFIX
+PKG_NAME=$PKG_ARCHITECTURE-libiconv-$THREADS_MODEL-$EXCEPTIONS_MODEL-$LINK_TYPE_SUFFIX
 PKG_DIR_NAME=libiconv-${PKG_VERSION}
 PKG_TYPE=.tar.gz
 PKG_URLS=(
